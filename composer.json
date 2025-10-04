@@ -14,10 +14,9 @@
         "backpack/theme-tabler": "^1.2",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "nwidart/laravel-modules": "*"
+        "nwidart/laravel-modules": "^12.0"
     },
     "require-dev": {
-        "backpack/devtools": "*",
         "backpack/generators": "^4.0",
         "fakerphp/faker": "^1.23",
         "laravel/pail": "^1.2.2",
@@ -79,7 +78,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "wikimedia/composer-merge-plugin": true
         }
     },
     "minimum-stability": "stable",
