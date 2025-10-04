@@ -27,6 +27,7 @@ class ContactsServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         $this->loadMigrationsFrom(module_path($this->name, 'database/migrations'));
+        Blade::componentNamespace('Modules\\Contact\\View\\Components', 'contacts');
     }
 
     /**

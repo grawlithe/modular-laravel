@@ -4,6 +4,7 @@ namespace Modules\Contacts\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Modules\Contacts\Models\Contact;
 
 class ContactsController extends Controller
 {
@@ -12,7 +13,9 @@ class ContactsController extends Controller
      */
     public function index()
     {
-        return view('contacts::index');
+        // Fetch all contacts, ordered by creation date
+        $contacts = Contact::orderBy('created_at', 'desc')->get();
+        return response()->json($contacts);
     }
 
     /**
@@ -26,14 +29,23 @@ class ContactsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(Request $request) {
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:contacts',
+            'phone' => 'nullable|string',
+        ]);
+
+        $contact = Contact::create($validatedData);
+        return response()->json($contact, 201); // 201 Created
+    }
 
     /**
      * Show the specified resource.
      */
-    public function show($id)
+    public function show(Contact $contact)
     {
-        return view('contacts::show');
+        return response()->json($contact);
     }
 
     /**
@@ -47,10 +59,22 @@ class ContactsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) {}
+    public function update(Request $request, Contact $contact) {
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email|unique:contacts,email,' . $contact->id, // Ignore current contact's ID
+            'phone' => 'nullable|string',
+        ]);
+
+        $contact->update($validatedData);
+        return response()->json($contact);
+    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id) {}
+    public function destroy(Contact $contact) {
+        $contact->delete();
+        return response()->json(null, 204); // 204 No Content
+    }
 }

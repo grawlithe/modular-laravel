@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Contacts\Http\Controllers\ContactsController;
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('contacts', ContactsController::class)->names('contacts');
+// Route::middleware(['auth', 'verified'])->group(function () {
+//     Route::resource('contacts', ContactsController::class)->names('contacts');
+// });
+
+Route::get('contact-manager', function () {
+    return view('contacts::index');
 });
