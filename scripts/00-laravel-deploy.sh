@@ -10,3 +10,9 @@ php artisan route:cache
 
 echo "Running migrations..."
 php artisan migrate --force
+
+echo "Installing npm packages..."
+npm install
+
+echo "Building assets..."
+npm run build
