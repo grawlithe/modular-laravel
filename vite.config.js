@@ -3,6 +3,8 @@ import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
 import path from 'path';
+import collectModuleAssetsPaths from './vite-module-loader.js';
+const allPaths = await collectModuleAssetsPaths(['resources/js/app.js'], 'Modules');
 const modulePath = path.resolve(__dirname, 'Modules');
 
 export default defineConfig({
@@ -12,6 +14,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'Modules/Contacts/resources/assets/js/app.js',
+                allPaths,
             ],
             refresh: true,
         }),
