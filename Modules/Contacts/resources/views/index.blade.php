@@ -8,5 +8,5 @@
         </div>
 
     {{-- Link to your compiled module JS asset --}}
-    @vite('Modules/Contacts/Resources/assets/js/app.js')
+    @vite('Modules/Contacts/resources/assets/js/app.js')
 </x-contacts::layouts.master>
