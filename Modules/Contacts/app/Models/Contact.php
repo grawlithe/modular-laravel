@@ -16,6 +16,7 @@ class Contact extends Model
     protected $fillable = [
         'name',
         'email',
+        'image',
     ];
 
     // protected static function newFactory(): ContactFactory

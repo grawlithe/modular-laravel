@@ -4,6 +4,7 @@ namespace Modules\Contacts\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Modules\Contacts\Models\Contact;
 
 class ContactsController extends Controller
@@ -34,7 +35,13 @@ class ContactsController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|unique:contacts',
             'phone' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('uploads', 'public');
+            $validatedData['image'] = $path;
+        }
 
         $contact = Contact::create($validatedData);
         return response()->json($contact, 201); // 201 Created
@@ -64,7 +71,17 @@ class ContactsController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|unique:contacts,email,' . $contact->id, // Ignore current contact's ID
             'phone' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            // Delete old image if it exists
+            if ($contact->image) {
+                Storage::disk('public')->delete($contact->image);
+            }
+            $path = $request->file('image')->store('', 'public');
+            $validatedData['image'] = $path;
+        }
 
         $contact->update($validatedData);
         return response()->json($contact);
